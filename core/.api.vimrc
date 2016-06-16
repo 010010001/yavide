@@ -865,13 +865,19 @@ endfunction
 function! Y_SrcCodeHighlighter_Apply(filename, syntax_file)
     let l:currentBuffer = expand('%:p"')
     if l:currentBuffer == a:filename
-        " Apply the syntax highlighting rules
+        " Clear previously generated syntax rules
+        execute('syntax clear yavideCppNamespace yavideCppClass yavideCppStructure yavideCppEnum yavideCppEnumValue yavideCppUnion yavideCppClassStructUnionMember yavideCppLocalVariable yavideCppVariableDefinition yavideCppFunctionPrototype yavideCppFunctionDefinition yavideCppMacro yavideCppTypedef yavideCppExternForwardDeclaration')
+        
+        " Apply the new syntax highlighting rules
+        "execute('syntax include yavideCppNamespace yavideCppClass yavideCppStructure yavideCppEnum yavideCppEnumValue yavideCppUnion yavideCppClassStructUnionMember yavideCppLocalVariable yavideCppVariableDefinition yavideCppFunctionPrototype yavideCppFunctionDefinition yavideCppMacro yavideCppTypedef yavideCppExternForwardDeclaration '.a:syntax_file)
         execute('source '.a:syntax_file)
 
         " Following command is a quick hack to apply the new syntax for
         " the given buffer. I haven't found any other more viable way to do it 
         " while keeping it fast & low on resources,
         execute(':redrawstatus')
+    else
+       echomsg 'Not applicable for the current buffer ... Syntax file: '.a:syntax_file . ' Filename: '.a:filename . ' Current file: ' . l:currentBuffer
     endif
 endfunction
 
